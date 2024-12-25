@@ -31,7 +31,9 @@ namespace BookLibraryWeb.Controllers
             {
                 context.Categories.Add(obj);    
                 context.SaveChanges();
-            return RedirectToAction("Index");
+                TempData["sucess"] = "Category Created Successfully"; 
+
+                return RedirectToAction("Index");
             }
             return View("Create",obj);
         }
@@ -57,6 +59,8 @@ namespace BookLibraryWeb.Controllers
             {
                 context.Categories.Update(obj);
                 context.SaveChanges();
+                TempData["sucess"] = "Category Updated Successfully";
+
                 return RedirectToAction("Index");
             }
             return View("Edit", obj);
@@ -85,6 +89,8 @@ namespace BookLibraryWeb.Controllers
             }
             context.Categories.Remove(obj);
             context.SaveChanges();
+            TempData["sucess"] = "Category Deleted Successfully";
+
             return RedirectToAction("Index");
         }
 

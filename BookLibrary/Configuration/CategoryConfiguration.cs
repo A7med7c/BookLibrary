@@ -10,7 +10,12 @@ namespace BookLibraryWeb.Configuration
         public void Configure(EntityTypeBuilder<Category> builder)
         {
             builder.HasKey(c=>c.CategoryId);
-            builder.Property(c => c.Name).IsRequired();   
+
+            builder.Property(c => c.Name).IsRequired();
+            builder.Property(c => c.Name).HasColumnName("Category Name");
+            
+            builder.Property(c => c.DisplayOrder).HasColumnName("Display Order");
+            
         }
     }
 }

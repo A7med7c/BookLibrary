@@ -1,5 +1,5 @@
-﻿using BookLibraryWeb.Data;
-using BookLibraryWeb.Models;
+﻿using BookLibrary.BL.Models;
+using BookLibrary.DataAcess.Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookLibraryWeb.Controllers

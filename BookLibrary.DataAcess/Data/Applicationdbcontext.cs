@@ -1,8 +1,8 @@
-﻿using BookLibraryWeb.Configuration;
-using BookLibraryWeb.Models;
+﻿using BookLibrary.BL.Models;
+using BookLibrary.DataAcess.Configuration;
 using Microsoft.EntityFrameworkCore;
 
-namespace BookLibraryWeb.Data
+namespace BookLibrary.DataAcess.Data
 {
     public class ApplicationDbContext : DbContext            
     {

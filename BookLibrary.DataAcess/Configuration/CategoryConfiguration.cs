@@ -1,9 +1,8 @@
-﻿using BookLibraryWeb.Data;
-using BookLibraryWeb.Models;
+﻿using BookLibrary.BL.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace BookLibraryWeb.Configuration
+namespace BookLibrary.DataAcess.Configuration
 {
     public class CategoryConfiguration : IEntityTypeConfiguration<Category>
     {

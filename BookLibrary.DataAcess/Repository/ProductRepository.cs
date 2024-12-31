@@ -4,26 +4,22 @@ using BookLibrary.DataAcess.Repository.IRepository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace BookLibrary.DataAcess.Repository
 {
-    public class CategoryRepository : Repository<Category> ,ICategoryRepository
+    public class ProductRepository : Repository<Product>, IProductRepository
     {
         private readonly ApplicationDbContext _context;
-        public CategoryRepository(ApplicationDbContext context) : base(context)
+
+        public ProductRepository(ApplicationDbContext context) : base(context) 
         {
-            
-               _context = context;
-            
+            _context = context;
         }
-      
-        public void Update(Category obj)
+        public void Update(Product product)
         {
-            _context.Categories.Update(obj);
+            _context.Update(product);
         }
-      
     }
 }

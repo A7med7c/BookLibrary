@@ -11,5 +11,8 @@ namespace BookLibrary.BL.Models
         [Range(1, 100, ErrorMessage = "DisplayOrder must be between 1 and 100.")]
         public int DisplayOrder { get; set; }
 
+       // public List<Product> products { get; set; }
+
+
     }
 }

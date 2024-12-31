@@ -1,22 +1,23 @@
 ﻿using BookLibrary.BL.Models;
 using BookLibrary.DataAcess.Data;
+using BookLibrary.DataAcess.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookLibraryWeb.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly ApplicationDbContext context;
+        private readonly ICategoryRepository categoryRepo;
 
-        public CategoryController(ApplicationDbContext context)
+        public CategoryController(ICategoryRepository context)
         {
-            this.context = context;
+           categoryRepo = context;
         }
 
         [HttpGet]
         public IActionResult Index()
         {
-            List<Category> categories = context.Categories.ToList();
+            List<Category> categories = categoryRepo.GetAll().ToList();
             return View("Index",categories);
         }
         [HttpGet]
@@ -29,8 +30,8 @@ namespace BookLibraryWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                context.Categories.Add(obj);    
-                context.SaveChanges();
+                categoryRepo.Add(obj);
+                categoryRepo.Save();    
                 TempData["sucess"] = "Category Created Successfully"; 
 
                 return RedirectToAction("Index");
@@ -45,7 +46,7 @@ namespace BookLibraryWeb.Controllers
             {
                 return NotFound();  
             }
-            Category categoryfromDb = context.Categories.FirstOrDefault(c=>c.CategoryId == id);
+            Category categoryfromDb = categoryRepo.Get(c=>c.CategoryId == id);
             if (categoryfromDb == null) 
             {
                 return NotFound();
@@ -53,12 +54,13 @@ namespace BookLibraryWeb.Controllers
             return View("Edit", categoryfromDb);
         }
         [HttpPost]
-        public IActionResult Edit(Category obj , int id)
+        public IActionResult Edit(Category obj)
         {
+          
             if (ModelState.IsValid)
             {
-                context.Categories.Update(obj);
-                context.SaveChanges();
+                categoryRepo.Update(obj);
+                categoryRepo.Save();
                 TempData["sucess"] = "Category Updated Successfully";
 
                 return RedirectToAction("Index");
@@ -72,7 +74,7 @@ namespace BookLibraryWeb.Controllers
             {
                 return NotFound();
             }
-            Category categoryfromDb = context.Categories.FirstOrDefault(c => c.CategoryId == id);
+            Category categoryfromDb = categoryRepo.Get(c => c.CategoryId == id);
             if (categoryfromDb == null)
             {
                 return NotFound();
@@ -82,13 +84,13 @@ namespace BookLibraryWeb.Controllers
         [HttpPost,ActionName("Delete")]
         public IActionResult DeletePOST(int? id)
         {
-            Category obj = context.Categories.FirstOrDefault(e=>e.CategoryId == id);
+            Category obj = categoryRepo.Get(e=>e.CategoryId == id);
             if (obj == null)
             {
                 return NotFound();
             }
-            context.Categories.Remove(obj);
-            context.SaveChanges();
+            categoryRepo.Remove(obj);
+            categoryRepo.Save();
             TempData["sucess"] = "Category Deleted Successfully";
 
             return RedirectToAction("Index");

@@ -29,8 +29,11 @@ namespace BookLibrary.DataAcess.Configuration
 
             builder.Property(x=>x.Price100).IsRequired();
 
-            
+            builder.HasOne(x=>x.Category)
+                .WithMany(x=>x.Products)
+                .HasForeignKey(x=>x.CategoryId)
+                .OnDelete(DeleteBehavior.NoAction);  
 
-        }
+    }
     }
 }

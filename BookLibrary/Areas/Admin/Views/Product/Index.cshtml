@@ -1,6 +1,6 @@
 ﻿@model List<Product>
 
-<div class="card shadow border-0 mt-4">
+<div class="card shadow border-0 my-4">
     <div class="card-header bg-secondary bg-gradient ml-0 py-3">
         <div class="row">
             <div class="col-12 text-center">
@@ -27,8 +27,10 @@
                     <th>ISBN</th>
                     <th>Price</th>
                     <th>Author</th>
+                    <th>Image</th>
                     <th>Category</th>
-                    <th></th>
+                    <th>Edit</th>
+                    <th>Delete</th>
                    
                 </tr>
             </thead>
@@ -40,6 +42,8 @@
                         <td>@item.ISBN</td>
                         <td>@item.ListPrice</td>
                         <td>@item.Author</td>
+                        <td>@item.ImageUrl</td>
+                        <td></td>
                       <td>
                             <div class="w-75 btn-group" role="group">
                                 <a asp-controller="Product" asp-action="Edit" asp-route-id="@item.ProductId" class="btn btn-primary mx-2">

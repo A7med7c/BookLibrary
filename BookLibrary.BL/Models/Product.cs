@@ -44,7 +44,8 @@ namespace BookLibrary.BL.Models
         [Range(1, 1000)]
         public double Price100 { get; set; }
 
-      //  public Category category { get; set; }
-     //   public int CategoryId { get; set; }
+        public string ImageUrl { get; set; }
+        public int CategoryId { get; set; }
+        public Category Category { get; set; }
     }
 }

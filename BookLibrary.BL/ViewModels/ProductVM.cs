@@ -1,4 +1,5 @@
 ﻿using BookLibrary.BL.Models;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,8 @@ namespace BookLibrary.BL.View_Model
     public class ProductVM
     {
         public Product Product { get; set; }
-        public IEnumerable<SelectListItem> Categories { get; set; }
+
+        [ValidateNever]
+        public IEnumerable<SelectListItem> CategoriesList { get; set; }
     }
 }

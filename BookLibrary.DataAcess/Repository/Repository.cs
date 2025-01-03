@@ -18,6 +18,7 @@ namespace BookLibrary.DataAcess.Repository
         {
             _context = context;
             this.dbset = _context.Set<T>();
+            _context.Products.Include(u => u.Category);
         }
         public void Add(T entity)
         {

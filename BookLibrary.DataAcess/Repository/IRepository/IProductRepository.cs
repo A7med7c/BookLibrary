@@ -9,6 +9,7 @@ namespace BookLibrary.DataAcess.Repository.IRepository
 {
     public interface IProductRepository : IRepository<Product>
     {
-        void Update(Product product);   
+        void Update(Product product);
+        List<Product> productsWithCategory();
     }
 }

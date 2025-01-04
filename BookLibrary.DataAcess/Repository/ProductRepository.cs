@@ -1,6 +1,7 @@
 ﻿using BookLibrary.BL.Models;
 using BookLibrary.DataAcess.Data;
 using BookLibrary.DataAcess.Repository.IRepository;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,15 @@ namespace BookLibrary.DataAcess.Repository
         {
             _context = context;
         }
+
+        public List<Product> productsWithCategory()
+        {
+            var products = _context
+                .Products.Include(p => p.Category)
+                .ToList();
+            return products;
+        }
+
         public void Update(Product obj)
         {
             var objFromDb = _context.Products.FirstOrDefault(e => e.ProductId == obj.ProductId);
@@ -37,5 +47,6 @@ namespace BookLibrary.DataAcess.Repository
                 }
             }
         }
+
     }
 }

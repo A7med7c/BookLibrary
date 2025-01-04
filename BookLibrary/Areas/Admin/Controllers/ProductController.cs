@@ -4,6 +4,8 @@ using BookLibrary.DataAcess.Data;
 using BookLibrary.DataAcess.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 namespace BookLibraryWeb.Areas.Admin.Controllers
 {
     [Area("Admin")]
@@ -20,10 +22,11 @@ namespace BookLibraryWeb.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            List<Product> products = _unitOfWork.Product.GetAll().ToList();
-            return View(products);
-        }
+            // List<Product> objProductList = _unitOfWork.Product.GetAll(includeProperties: "Category").ToList();
+            List<Product> ProductList = _unitOfWork.Product.productsWithCategory().ToList();
 
+            return View(ProductList);
+        }
         [HttpGet]
         public IActionResult Upsert(int? id)
         {
@@ -138,5 +141,21 @@ namespace BookLibraryWeb.Areas.Admin.Controllers
             TempData["sucess"] = "Product Deleted Successfully";
             return RedirectToAction(nameof(Index));
         }
+        #region API Calls
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+           // List<Product> objProductList = _unitOfWork.Product.GetAll(includeProperties: "Category").ToList();
+
+            List<Product> ProductList = _unitOfWork.Product.productsWithCategory().ToList();
+            var options = new JsonSerializerOptions
+            {
+                ReferenceHandler = ReferenceHandler.IgnoreCycles,
+                WriteIndented = true // Optional: for pretty-printing the JSON
+            };
+            return Json(new { data = ProductList }, options);
+        }
+
+        #endregion
     }
 }

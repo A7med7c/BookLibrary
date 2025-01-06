@@ -1,10 +1,11 @@
 ﻿using BookLibrary.BL.Models;
 using BookLibrary.DataAcess.Configuration;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookLibrary.DataAcess.Data
 {
-    public class ApplicationDbContext : DbContext            
+    public class ApplicationDbContext : IdentityDbContext            
     {
         public ApplicationDbContext():base()
         {
@@ -19,6 +20,8 @@ namespace BookLibrary.DataAcess.Data
         public DbSet<Product> Products { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             //insert data
             modelBuilder.Entity<Category>().HasData(
                 new Category { CategoryId = 1 , Name = "Action" , DisplayOrder = 1},

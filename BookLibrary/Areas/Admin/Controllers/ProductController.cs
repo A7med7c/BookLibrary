@@ -6,9 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using BookLibrary.Utility;
+using Microsoft.AspNetCore.Authorization;
 namespace BookLibraryWeb.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = StaticDetails.Role_Admin)]
+
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -28,6 +32,7 @@ namespace BookLibraryWeb.Areas.Admin.Controllers
             return View(ProductList);
         }
         [HttpGet]
+
         public IActionResult Upsert(int? id)
         {
             ProductVM productVM = new()

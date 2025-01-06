@@ -161,7 +161,11 @@ bg-success {
         background-color: #C07b24;
         border-color: #C07b24;
     }
-
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
 
 
     .btn-check:focus + .btn-outline-warning, .btn-outline-warning:focus {

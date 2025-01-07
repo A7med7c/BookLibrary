@@ -27,6 +27,12 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 
+builder.Services.AddAuthentication().AddGoogle(options =>
+{
+    options.ClientId = "166425263311-3of872na4f9aruksgaa25ade7rg8poaf.apps.googleusercontent.com";
+    options.ClientSecret = "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";
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

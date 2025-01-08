@@ -1,49 +1,79 @@
-﻿@model IEnumerable<Product>
+﻿@using X.PagedList;
+@using X.PagedList.Mvc.Core
+@model IPagedList<Product>
 
-<div class="row pb-3">
-    @foreach (var product in Model)
-    {
-        <div class="col-lg-3 col-sm-6">
-            <div class="row p-2">
-                <div class="col-12 p-1">
-                    <div class="card border-0 p-3 shadow  border-top border-5 rounded">
-                        <a asp-action="Details"
-                           asp-route-id="@product.ProductId">
-                              <img src="@product.ImageUrl" class="card-img-top rounded" />
-                        </a>
-       
-                        <div class="card-body pb-0">
-                            <div class="pl-1">
-                                <p class="card-title h5 text-dark opacity-75 text-uppercase text-center">@product.Title</p>
-                                <p class="card-title text-warning text-center">by <b>@product.Author</b></p>
-                            </div>
-                            <div class="pl-1">
-                                <p class="text-dark text-opacity-75 text-center mb-0">
-                                    List Price:
-                                    <span class="text-decoration-line-through">
-                                        @product.ListPrice.ToString("c")
-                                    </span>
-                                </p>
-                            </div>
-                            <div class="pl-1">
-                                <p class="text-dark text-opacity-75 text-center">
-                                    As low as:
-                                    <span>
-                                        @product.Price100.ToString("c")
-                                    </span>
-                                </p>
-                            </div>
-                        </div>
-                        <div>
-                            <a asp-action="Details"
-                               asp-route-id="@product.ProductId"
-                               class="btn btn-primary bg-gradient border-0 form-control">
-                                Details
+<div class="container">
+    <!-- Search Box -->
+    <form asp-action="Index" method="get" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="searchTerm" class="form-control" placeholder="Search by title or author..." value="@ViewBag.SearchTerm" />
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Product Grid -->
+    <div class="row pb-3">
+        @foreach (var product in Model)
+        {
+            <div class="col-lg-3 col-sm-6">
+                <div class="row p-2">
+                    <div class="col-12 p-1">
+                        <div class="card border-0 p-3 shadow border-top border-5 rounded">
+                            <a asp-action="Details" asp-route-id="@product.ProductId">
+                                <img src="@product.ImageUrl" class="card-img-top rounded book-image" />
                             </a>
+
+                            <div class="card-body pb-0">
+                                <div class="pl-1">
+                                    <p title="@product.Title" class="card-title h5 text-dark opacity-75 text-uppercase text-center product-title">@product.Title</p>
+                                    <p class="card-title text-warning text-center">by <b>@product.Author</b></p>
+                                </div>
+                                <div class="pl-1">
+                                    <p class="text-dark text-opacity-75 text-center mb-0">
+                                        List Price:
+                                        <span class="text-decoration-line-through">
+                                            @product.ListPrice.ToString("c")
+                                        </span>
+                                    </p>
+                                </div>
+                                <div class="pl-1">
+                                    <p class="text-dark text-opacity-75 text-center">
+                                        As low as:
+                                        <span>
+                                            @product.Price100.ToString("c")
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div>
+                                <a asp-action="Details"
+                                   asp-route-id="@product.ProductId"
+                                   class="btn btn-primary bg-gradient border-0 form-control">
+                                    Details
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    }
+        }
+    </div>
+
+    <!-- Pagination Controls -->
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page, searchTerm = ViewBag.SearchTerm }),
+                     new X.PagedList.Web.Common.PagedListRenderOptions
+            {
+                LiElementClasses = new[] { "page-item" },
+                PageClasses = new[] { "page-link" },
+                UlElementClasses = new[] { "pagination" },
+                DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+                EllipsesFormat = "&#8230;",
+                MaximumPageNumbersToDisplay = 5
+            })
+        </ul>
+    </nav>
 </div>

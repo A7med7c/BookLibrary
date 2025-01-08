@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
 
 namespace BookLibrary.BL.Models
 {
@@ -11,7 +12,7 @@ namespace BookLibrary.BL.Models
         [Display(Name = "Display Order")]
         [Range(1, 100, ErrorMessage = "DisplayOrder must be between 1 and 100.")]
         public int DisplayOrder { get; set; }
-
+        [ValidateNever]
         public List<Product> Products { get; set; }
 
 

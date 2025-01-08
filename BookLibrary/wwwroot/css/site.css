@@ -553,3 +553,44 @@ footer {
         background-color: #578553;
         border-color: #578553;
     }
+
+/* Pagination styling */
+.pagination-container {
+    margin-top: 20px;
+}
+
+.pagination .page-item {
+    margin: 0 2px;
+}
+
+    .pagination .page-item.active .page-link {
+        background-color: #192E2F; /* Your custom primary color */
+        border-color: #192E2F;
+        color: white;
+    }
+
+.pagination .page-link {
+    color: #192E2F; /* Your custom primary color */
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 8px 16px;
+    transition: all 0.3s ease;
+}
+
+    .pagination .page-link:hover {
+        background-color: #134b5f; /* Darker shade of your custom color */
+        border-color: #134b5f;
+        color: white;
+    }
+
+.pagination .page-item.disabled .page-link {
+    color: #6c757d; /* Gray for disabled links */
+    pointer-events: none;
+}
+/* CSS for truncating product titles */
+.product-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%; /* Ensure the title doesn't overflow its container */
+}

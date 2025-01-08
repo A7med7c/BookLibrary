@@ -1,8 +1,9 @@
 using BookLibrary.BL.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-
 using BookLibrary.DataAcess.Repository.IRepository;
+using X.PagedList;
+
 namespace BookLibraryWeb.Areas.Customer.Controllers
 {
     [Area("Customer")]
@@ -17,15 +18,39 @@ namespace BookLibraryWeb.Areas.Customer.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int? page, string searchTerm)
         {
-            IEnumerable<Product> products = _unitOfWork.Product.GetAll(includeProperties: "Category");    
-            return View(products);
+            int pageSize = 8; // Number of items per page
+            int pageNumber = page ?? 1; // Default to page 1 if no page is specified
+
+            IEnumerable<Product> products;
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                // Filter products based on the search term
+                products = _unitOfWork.Product.GetAll(
+                    filter: p => p.Title.Contains(searchTerm) || p.Author.Contains(searchTerm),
+                    includeProperties: "Category"
+                );
+            }
+            else
+            {
+                // Get all products if no search term is provided
+                products = _unitOfWork.Product.GetAll(includeProperties: "Category");
+            }
+
+            // Paginate the products
+            var pagedProducts = products.ToPagedList(pageNumber, pageSize);
+
+            // Pass the search term to the view to preserve it in the search box
+            ViewBag.SearchTerm = searchTerm;
+
+            return View(pagedProducts);
         }
 
         public IActionResult Details(int id)
         {
-            Product product = _unitOfWork.Product.Get(e=>e.ProductId == id, includeProperties: "Category");
+            Product product = _unitOfWork.Product.Get(e => e.ProductId == id, includeProperties: "Category");
             return View(product);
         }
 

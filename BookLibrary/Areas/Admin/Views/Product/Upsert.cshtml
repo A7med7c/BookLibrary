@@ -59,9 +59,9 @@
                         </div>
                         <div class="form-floating py-2 col-12">
                             <select asp-for="@Model.Product.CategoryId" asp-items="@Model.CategoriesList" class="form-select border-0 shadow">
-                                <option disabled selected>--select Category--</option>
+                                 <option disabled selected>--select Category--</option>
                             </select>
-                            <label asp-for="Product.CategoryId" class="ms-2"></label>
+                            <label asp-for="Product.CategoryId" class="ms-2">Category</label>
                             <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
                         </div>
                         <div class="row pt-2">

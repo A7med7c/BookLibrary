@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -16,5 +17,6 @@ namespace BookLibrary.BL.Models
         public string? PostalCode { get; set; }
         public string? State { get; set; }
         public string? City { get; set; }
+
     }
 }

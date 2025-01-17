@@ -13,8 +13,7 @@ namespace BookLibrary.BL.Models
         [Range(1, 100, ErrorMessage = "DisplayOrder must be between 1 and 100.")]
         public int DisplayOrder { get; set; }
         [ValidateNever]
-        public List<Product> Products { get; set; }
-
-
+        public virtual List<Product> Products { get; set; }
+  
     }
 }

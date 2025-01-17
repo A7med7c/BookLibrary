@@ -49,6 +49,8 @@ namespace BookLibrary.BL.Models
         public string ImageUrl { get; set; }
         public int CategoryId { get; set; }
         [ValidateNever]
-        public Category Category { get; set; }
+        public virtual Category Category { get; set; }
+
+ 
     }
 }

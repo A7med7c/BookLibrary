@@ -14,6 +14,8 @@ namespace BookLibrary.DataAcess.Repository
         private readonly ApplicationDbContext _context;
         public ICategoryRepository Category { get; private set; }
         public IProductRepository Product { get; private set; }
+        public IShoppingCartRepository ShoppingCart { get; set; }
+        public IApplicationUserRepository ApplicationUser { get; set; }
 
 
         public UnitOfWork(ApplicationDbContext context)
@@ -22,6 +24,8 @@ namespace BookLibrary.DataAcess.Repository
             _context = context;
             Category = new CategoryRepository(context); 
             Product = new ProductRepository(context);
+            ShoppingCart = new ShoppingCartRepository(context);
+            ApplicationUser = new ApplicationUserRepository(context);
 
         }
 

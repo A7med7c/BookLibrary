@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BookLibrary.BL.Models
 {
-    public class OrderDatails
+    public class OrderDetail
     {
         public int Id { get; set; }
         [Required]

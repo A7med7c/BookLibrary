@@ -1,11 +1,14 @@
-﻿@model Product
+﻿@model ShoppingCart
+@using System.Text.Encodings.Web
+
 <form method="post">
+    <input type="hidden" asp-for="ProductId" />
     <div class="card shadow border-0 mt-4 mb-4">
         <div class="card-header bg-secondary bg-gradient text-light py-4">
             <div class="row">
                 <div class="col-12 text-center">
-                    <h3 class="text-white text-uppercase">@Model.Title</h3>
-                    <p class="text-white-50 fw-semibold mb-0">by @Model.Author</p>
+                    <h3 class="text-white text-uppercase">@Model.Product?.Title ?? "No Title"</h3>
+                    <p class="text-white-50 fw-semibold mb-0">by @Model.Product?.Author ?? "Unknown Author"</p>
                 </div>
             </div>
         </div>
@@ -13,31 +16,36 @@
             <div class="py-3">
                 <div class="row">
                     <div class="col-6 col-md-2 offset-lg-1 pb-1">
-                        <a asp-action="Index" class="btn btn-outline-primary bg-gradient mb-5 fw-semibold btn-sm text-uppercase">
-                            <small>Back to home</small>
+                        <a asp-controller="Home" asp-action="Index"
+                           class="btn btn-outline-primary bg-gradient mb-5 fw-semibold btn-sm text-uppercase">
+                            <small>Back to Home</small>
                         </a>
                     </div>
                 </div>
+
                 <div class="row">
                     <div class="col-12 col-lg-3 offset-lg-1 text-center mb-3">
-                        <img src="@Model.ImageUrl" width="100%" class="rounded" />
+                        <img src="@Model.Product?.ImageUrl" width="100%" class="rounded" alt="Product Image" />
                     </div>
-                    <div class="col-12 col-lg-6 offset-lg-1">
 
+                    <div class="col-12 col-lg-6 offset-lg-1">
                         <div class="col-12 col-md-6 pb-4">
-                            <span class="badge">@Model.Category.Name</span>
+                            <span class="badge">@Model.Product?.Category?.Name ?? "Uncategorized"</span>
                         </div>
+
                         <div class="row ps-2">
-                            <h6 class="text-dark text-opacity-50 ">ISBN : @Model.ISBN</h6>
+                            <h6 class="text-dark text-opacity-50">ISBN: @Model.Product?.ISBN ?? "N/A"</h6>
                         </div>
+
                         <div class="row ps-2">
-                            <h6 class="text-dark text-opacity-50  pb-2">
+                            <h6 class="text-dark text-opacity-50 pb-2">
                                 List Price:
                                 <span class="text-decoration-line-through">
-                                    @Model.ListPrice.ToString("c")
+                                    @(Model.Product?.ListPrice.ToString("c") ?? "$0.00")
                                 </span>
                             </h6>
                         </div>
+
                         <div class="row text-center ps-2">
                             <div class="p-1 col-3 col-lg-2 bg-white border-bottom">
                                 <div class="text-dark text-opacity-50 fw-semibold">Quantity</div>
@@ -52,23 +60,28 @@
                                 <div class="text-dark text-opacity-50 fw-semibold">100+</div>
                             </div>
                         </div>
+
                         <div class="row text-center ps-2">
                             <div class="p-1 col-3 col-lg-2 bg-white text-warning fw-bold">
                                 <div>Price</div>
                             </div>
                             <div class="p-1 col-3 col-lg-2 bg-white text-warning fw-bold">
-                                <div>@Model.Price.ToString("c")</div>
+                                <div>@(Model.Product?.Price.ToString("c") ?? "$0.00")</div>
                             </div>
                             <div class="p-1 col-3 col-lg-2 bg-white text-warning fw-bold">
-                                <div>@Model.Price50.ToString("c")</div>
+                                <div>@(Model.Product?.Price50.ToString("c") ?? "$0.00")</div>
                             </div>
                             <div class="p-1 col-3 col-lg-2 bg-white text-warning fw-bold">
-                                <div>@Model.Price100.ToString("c")</div>
+                                <div>@(Model.Product?.Price100.ToString("c") ?? "$0.00")</div>
                             </div>
                         </div>
+
                         <div class="row pl-2 my-3">
-                            <p  class="text-secondary lh-sm">@Html.Raw(Model.Description)</p> 
+                            <p class="text-secondary lh-sm">
+                                @Html.Raw(HtmlEncoder.Default.Encode(Model.Product?.Description ?? "No description available."))
+                            </p>
                         </div>
+
                         <div class="row pl-2 mb-3">
                             <div class="col-md-4">
                                 <div class="input-group mb-3">
@@ -76,22 +89,22 @@
                                           id="inputGroup-sizing-default">
                                         Count
                                     </span>
-                                    <input type="number" value="1" class="form-control text-end"
-                                           aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
-
+                                    <input asp-for="Quantity" type="number" value="1" min="1" max="1000" required
+                                           class="form-control text-end"
+                                           aria-label="Count Input" aria-describedby="inputGroup-sizing-default" />
                                 </div>
                             </div>
                         </div>
+
                         <div class="row">
                             <div class="col-12 col-md-6 pb-1">
-                                <button type="submit" asp-action="Index" asp-controller="ShoppingCart" 
-                                        class="btn btn-primary bg-gradient  w-100 py-2 text-uppercase fw-semibold">
-                               Add To Cart </button>
+                                <button type="submit" class="btn btn-primary bg-gradient w-100 py-2 text-uppercase fw-semibold">
+                                    Add to Cart
+                                </button>
                             </div>
                         </div>
-                    </div>
-
-                </div>
+                    </div> <!-- End Product Details -->
+                </div> <!-- End Main Row -->
             </div>
         </div>
     </div>

@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using BookLibrary.DataAcess.Repository.IRepository;
 using X.PagedList;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using BookLibrary.Utility;
 
 namespace BookLibraryWeb.Areas.Customer.Controllers
 {
@@ -50,9 +53,54 @@ namespace BookLibraryWeb.Areas.Customer.Controllers
 
         public IActionResult Details(int id)
         {
-            Product product = _unitOfWork.Product.Get(e => e.ProductId == id, includeProperties: "Category");
-            return View(product);
+            Product product = _unitOfWork.Product.Get(e => e.ProductId == id, includeProperties: "Category,");
+            ShoppingCart cart = new()
+            {
+                Product = product,
+                Quantity = 1,
+                ProductId = id
+            };
+
+            return View(cart);
+       
         }
+
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult Details(ShoppingCart shoppingCart)
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            shoppingCart.ApplicationUserId = userId;
+
+            ShoppingCart cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.ApplicationUserId == userId &&
+            u.ProductId == shoppingCart.ProductId);
+
+            if (cartFromDb != null)
+            {
+                // Shopping cart exists, update quantity
+                cartFromDb.Quantity += shoppingCart.Quantity;
+                _unitOfWork.ShoppingCart.Update(cartFromDb);
+            }
+            else
+            {
+                // Ensure Id is not set manually
+                shoppingCart.Id = 0; // <-- Prevents EF from using an explicit value
+                _unitOfWork.ShoppingCart.Add(shoppingCart);
+            }
+
+            _unitOfWork.Save();
+
+            HttpContext.Session.SetInt32(StaticDetails.SessionCart,
+            _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == userId).Count());
+
+            TempData["success"] = "Cart updated successfully";
+
+            return RedirectToAction(nameof(Index));
+        }
+
+
 
         public IActionResult Privacy()
         {

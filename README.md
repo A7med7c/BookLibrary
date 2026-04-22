@@ -1,46 +1,64 @@
-# E-Commerce & Book Library Management System
+# BookLibrary
 
-A scalable, secure, and user-friendly web application for managing and purchasing books online. Built with **ASP.NET Core MVC**, this system combines a robust book library with e-commerce capabilities, featuring secure authentication, payment integration, and a modern UI.
+BookLibrary is an ASP.NET Core MVC web application for browsing and purchasing books, with admin tooling for managing the catalog.
 
 ## Features
+- Browse the catalog with search (title/author) and pagination
+- Product details with tiered pricing (base/50/100 quantities)
+- Shopping cart with quantity adjustments and session cart count
+- Stripe Checkout integration and order confirmation flow
+- ASP.NET Core Identity authentication with role-based access (Admin, Customer, Company, Employee)
+- Google external login configuration
+- Admin CRUD for categories and products, including product image uploads
+- Seed data for sample categories and products
 
-### Authentication & Authorization
-- **User Authentication:** Secure registration and login powered by **ASP.NET Identity**.
-- **Role-Based Access Control (RBAC):**
-  - **Customers:** Browse, search, and purchase books.
-  - **Admins:** Manage books, categories, orders, and users.
-- **JWT Authentication:** Secure API endpoints for authenticated communication.
+## Tech Stack
+- .NET 8 / ASP.NET Core MVC
+- Entity Framework Core + SQL Server
+- ASP.NET Core Identity
+- Stripe.net
+- Bootstrap 5, DataTables, Toastr, SweetAlert2, TinyMCE
+- X.PagedList for pagination
 
-### Book & Order Management
-- **CRUD Operations:** Add, update, delete, and browse books and categories effortlessly.
-- **Search & Filtering:** Advanced options by title, category, author, and price.
-- **Wishlist & Cart:** Add books to wishlist or cart for purchase.
-- **Order Tracking:** View order status and history in real-time.
+## Project Structure
+- **BookLibraryWeb**: MVC app (areas: Customer, Admin, Identity)
+- **BookLibrary.DataAcess**: EF Core context, migrations, repositories, unit of work
+- **BookLibrary.BL**: domain models and view models
+- **BookLibrary.Utility**: constants, email sender, Stripe settings
 
-### Secure Payment Integration
-- **Stripe API:** Seamless and secure payments via credit/debit cards.
-- **Order Confirmation:** Generates invoices and sends confirmation emails.
+## Getting Started
 
-### Modern & Responsive UI
-- Built with **Bootstrap** and **JavaScript** for a mobile-friendly experience.
-- **Dark/Light Mode:** Toggle for enhanced user comfort and accessibility.
+### Prerequisites
+- .NET 8 SDK
+- SQL Server instance
 
-### Admin Dashboard
-- **Manage Users:** View and oversee customer accounts.
-- **Book Inventory:** Full CRUD operations for books and categories.
-- **Order Management:** Process, update, and track customer orders.
+### Configuration
+Update values in `BookLibrary/appsettings.json` or user secrets:
+- `ConnectionStrings:default`
+- `Authentication:Google:ClientId` / `Authentication:Google:ClientSecret`
+- `Stripe:SecretKey` / `Stripe:PublishableKey`
 
-### Scalable & Secure Architecture
-- **3-Tier Architecture:** Separates Controllers, Services, and Repositories.
-- **Patterns:** Implements **Generic Repository** and **Unit of Work** for maintainability.
-- **Email Notifications:** Automated emails for order confirmations and user updates.
+> Note: the repository includes placeholder/test keys. Replace them with your own and avoid committing real secrets.
 
-## Technologies Used
-- **Backend:** ASP.NET Core MVC, Entity Framework Core, ASP.NET Identity, JWT
-- **Database:** SQL Server
-- **Frontend:** Bootstrap, JavaScript
-- **Payment:** Stripe API
-- **Patterns:** Generic Repository, Unit of Work
-- **Tools:** Git, GitHub
+### Database
+From the repo root:
 
+```bash
+dotnet ef database update \
+  --project BookLibrary.DataAcess/BookLibrary.DataAcess.csproj \
+  --startup-project BookLibrary/BookLibraryWeb.csproj
+```
 
+### Run
+
+```bash
+dotnet run --project BookLibrary/BookLibraryWeb.csproj
+```
+
+## Notes
+- Roles are seeded the first time the register page is loaded.
+- `EmailSender` is a no-op implementation; wire up a real provider if you need outbound email.
+
+## Scripts
+- Build: `dotnet build BookLibrary.sln`
+- Test: `dotnet test BookLibrary.sln`
